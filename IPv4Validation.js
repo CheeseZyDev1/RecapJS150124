@@ -1,6 +1,19 @@
 function isValidIP(ipaddress){
-    const ipRegex = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
-    return ipRegex.test(ipaddress);
+    const parts = ipaddress.split('.');
+
+    if (parts.length !== 4) {
+        return false;
+    }
+
+    for (const part of parts) {
+        const num = parseInt(part, 10);
+
+        if (isNaN(num) || num < 0 || num > 255 || (num !== 0 && part.startsWith('0'))) {
+            return false; // แต่ละส่วนต้องเป็นตัวเลขระหว่าง 0 ถึง 255 และไม่มี 0 นำหน้าตัวเลขที่ไม่ใช่ 0
+        }
+    }
+
+    return true;
 }
 console.log(isValidIP("1.2.3.4"));    // true
 console.log(isValidIP("1.2.3"));      // false
